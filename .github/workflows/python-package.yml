@@ -1,0 +1,29 @@
+import streamlit as st
+
+st.title("Trader Disciplina AI")
+
+st.subheader("Gestão Inteligente para Conta Pequena")
+
+saldo = st.number_input("Digite seu saldo atual:", min_value=0.0)
+
+tendencia = st.selectbox("Tendência no H1:", ["Alta", "Baixa", "Lateral"])
+pullback = st.selectbox("Está em pullback?", ["Sim", "Não"])
+rejeicao = st.selectbox("Há candle de rejeição?", ["Sim", "Não"])
+
+if st.button("Analisar"):
+    risco = saldo * 0.02
+    risco_diario = saldo * 0.04
+
+    if tendencia == "Lateral":
+        st.warning("Mercado lateral. Melhor NÃO operar.")
+    elif pullback == "Sim" and rejeicao == "Sim":
+        if tendencia == "Alta":
+            st.success("Entrada de COMPRA válida.")
+        else:
+            st.success("Entrada de VENDA válida.")
+
+        st.write(f"Risco máximo por trade: R${risco:.2f}")
+        st.write(f"Risco máximo diário: R${risco_diario:.2f}")
+        st.write("Alvo mínimo recomendado: 2x o risco.")
+    else:
+        st.warning("Condições incompletas. Aguarde melhor oportunidade.")
